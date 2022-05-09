@@ -1,0 +1,3 @@
+#備忘録
+
+- 複数個応答メッセージを返したいときには、reply_messageの引数で渡すmessageにSendTextMessageクラスのタプルや配列を指定する。単に複数回reply_messageを呼び出しても最初の1回しか処理してくれない
