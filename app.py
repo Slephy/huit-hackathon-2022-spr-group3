@@ -2,9 +2,6 @@ import os, random
 from flask import Flask, request, abort
 from geopy.distance import geodesic
 
-# (緯度, 経度)
-TokyoStation = (35.681382, 139.76608399999998)
-NagoyaStation = (35.170915, 136.881537)
 
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -16,12 +13,13 @@ from linebot.models import (
     StickerMessage,
 )
 
+# (緯度, 経度)
+TokyoStation = (35.681382, 139.76608399999998)
+NagoyaStation = (35.170915, 136.881537)
+
 app = Flask(__name__)
-
-
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
-
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
@@ -52,6 +50,7 @@ def handle_message(event):
     msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
+
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_message(event):
     msgs = []
@@ -66,6 +65,7 @@ def handle_message(event):
     # msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
     line_bot_api.reply_message(event.reply_token, msgs)
     # line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
