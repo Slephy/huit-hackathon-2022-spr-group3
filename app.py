@@ -109,15 +109,17 @@ def handle_message(event):
 
     # line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
+@handler.add(MessageEvent, message=LocationMessage)
+def handle_location(event):
+    ret_msg = f"緯度:{event.message.latitude}, 経度:{event.message.longitude}"
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
+
+
 @handler.default()
 def default(event):
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text="その形式の入力には対応していません"))
     print(event)
 
-# @handler.add(MessageEvent, message=location)
-# def handle_location(event):
-#     ret_msg = f"緯度:{event.message.latitude}, 経度:{event.message.longitude}"
-#     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
     
 
 
