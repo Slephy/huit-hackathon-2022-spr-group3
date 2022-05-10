@@ -54,12 +54,14 @@ def handle_message(event):
 
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_message(event):
-    # msgs = []
+    msgs = []
     msg_pos = (event.message.latitude, event.message.longitude)
     msg = f"緯度:{msg_pos[0]}、経度:{msg_pos[1]}ですね！特定しました！"
+    msgs.append(TextSendMessage(text=msg))
 
     # msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+    line_bot_api.reply_message(event.reply_token, msgs)
+    # line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
