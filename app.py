@@ -7,6 +7,8 @@ from linebot.models import (
     MessageEvent,
     TextMessage,
     TextSendMessage,
+    LocationMessage,
+    StickerMessage,
 )
 
 app = Flask(__name__)
@@ -45,15 +47,15 @@ def handle_message(event):
     msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
-# @handler.add(MessageEvent, message=LocationMessage)
-# def handle_message(event):
-#     msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
-#     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+@handler.add(MessageEvent, message=LocationMessage)
+def handle_message(event):
+    msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
-# @handler.add(MessageEvent, message=StickerMessage)
-# def handle_message(event):
-#     msg = "これはスタンプですか？ ちょっとよくわかりませんね…"
-#     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+@handler.add(MessageEvent, message=StickerMessage)
+def handle_message(event):
+    msg = "これはスタンプですか？ ちょっとよくわかりませんね…"
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 
 
