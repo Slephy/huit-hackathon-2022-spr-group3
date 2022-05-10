@@ -45,9 +45,14 @@ def callback():
 #     msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
 #     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
-@handler.add(MessageEvent, message=LocationMessage)
-def handle_location(event):
-    msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
+# @handler.add(MessageEvent, message=LocationMessage)
+# def handle_message(event):
+#     msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
+#     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+
+@handler.add(MessageEvent, message=StickerMessage)
+def handle_message(event):
+    msg = "これはスタンプですか？ ちょっとよくわかりませんね…"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 
