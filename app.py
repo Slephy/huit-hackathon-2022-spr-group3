@@ -111,7 +111,8 @@ def handle_message(event):
 
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location(event):
-    ret_msg = f"緯度:{event.message.latitude}, 経度:{event.message.longitude}"
+    # ret_msg = f"緯度:{event.message.latitude}, 経度:{event.message.longitude}"
+    ret_msg = "あ、位置情報ですね！ でもこの辺りは行ったことないのでよくわかりません…"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
 
@@ -125,3 +126,4 @@ def default(event):
 
 if __name__ == "__main__":
     app.run()
+よくわかりませんよくわかりません
