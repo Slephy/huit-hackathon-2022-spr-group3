@@ -45,6 +45,12 @@ def handle_message(event):
     msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
+@handler.add(MessageEvent, message=TextMessage)
+def handle_location(event):
+    msg = "「これは位置情報ですか？ ちょっとよくわかりませんね…"
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+
+
 
 @handler.default()
 def default(event):
