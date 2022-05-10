@@ -59,6 +59,10 @@ def handle_message(event):
     msg = f"緯度:{msg_pos[0]}、経度:{msg_pos[1]}ですね！特定しました！"
     msgs.append(TextSendMessage(text=msg))
 
+    dist = geodesic(TokyoStation, msg_pos).km
+    msg = f"僕の家との距離は{dist}kmだね！"
+    msgs.append(TextSendMessage(text=msg))
+
     # msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
     line_bot_api.reply_message(event.reply_token, msgs)
     # line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
