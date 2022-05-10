@@ -59,19 +59,23 @@ def handle_message(event):
     msgs.append(TextSendMessage(text=msg))
 
     dist = geodesic(TokyoStation, msg_pos).km
-    msg = f"僕の家との距離は{dist}kmだね！"
-    msgs.append(TextSendMessage(text=msg))
+    if(dist > 0.5):
+        msg = f"僕の家との距離は{dist}kmだね！"
+        msgs.append(TextSendMessage(text=msg))
 
-    # msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
+    else:
+        msg = "ってあれ？これ僕の家のすぐ近くじゃん！？"
+        msgs.append(TextSendMessage(text=msg))
+        msg = "そうだよ、僕の家は東京駅なんだ…。どうしてわかったの？"
+        msgs.append(TextSendMessage(text=msg))
+
     line_bot_api.reply_message(event.reply_token, msgs)
-    # line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
     msg = "いいスタンプですね！"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
-
 
 
 @handler.default()
