@@ -110,6 +110,7 @@ def handle_message(event):
 
 @handler.default()
 def default(event):
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="その形式の入力には対応していません"))
     print(event)
 
 # @handler.add(MessageEvent, message=location)
