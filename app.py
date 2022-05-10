@@ -40,10 +40,10 @@ def callback():
     return "OK"
 
 
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-    msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+# @handler.add(MessageEvent, message=TextMessage)
+# def handle_message(event):
+#     msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
+#     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location(event):
