@@ -1,5 +1,10 @@
 import os, random
 from flask import Flask, request, abort
+from geopy.distance import geodesic
+
+# (緯度, 経度)
+TokyoStation = (35.681382, 139.76608399999998)
+NagoyaStation = (35.170915, 136.881537)
 
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -49,13 +54,16 @@ def handle_message(event):
 
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_message(event):
-    msg = f"緯度:{event.message.latitude}、経度:{event.message.longitude}ですね！"
+    # msgs = []
+    msg_pos = (event.message.latitude, event.message.longitude)
+    msg = f"緯度:{msg_pos[0]}、経度:{msg_pos[1]}ですね！特定しました！"
+
     # msg = "これは位置情報ですか？ ちょっとよくわかりませんね…"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
-    msg = "これはスタンプですか？ ちょっとよくわかりませんね…"
+    msg = "いいスタンプですね！"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 
@@ -65,7 +73,7 @@ def default(event):
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text="その形式の入力には対応していません"))
     print(event)
 
-    
+
 
 
 if __name__ == "__main__":
