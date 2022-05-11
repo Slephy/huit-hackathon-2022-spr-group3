@@ -1,4 +1,5 @@
-import os, random
+import os
+import random
 from flask import Flask, request, abort
 from geopy.distance import geodesic
 
@@ -80,10 +81,9 @@ def handle_message(event):
 
 @handler.default()
 def default(event):
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="その形式の入力には対応していません"))
+    line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(text="その形式の入力には対応していません"))
     print(event)
-
-
 
 
 if __name__ == "__main__":
