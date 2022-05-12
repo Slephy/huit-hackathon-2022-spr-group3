@@ -6,8 +6,8 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-departure_station = "新潟駅"
-destination_station = "寺尾駅"
+departure_station = "札幌駅"
+destination_station = "南千歳駅"
 # 経路の取得先URL
 urla = 'https://transit.yahoo.co.jp/search/result?from='
 urlb = '&flatlon=&to='
@@ -63,11 +63,18 @@ for j in range(1, 4):
     rosen_times = []
     while 1:
         i += 1
+
         stp = route_soup.select(
             "#route0"+str(j)+" > div > div.fareSection > div > ul > li.stop > ul > li:nth-child("+str(i)+") > dl > dd")
         tim = route_soup.select(
             "#route0"+str(j)+" > div > div.fareSection > div > ul > li.stop > ul > li:nth-child("+str(i)+") > dl > dt")
+        if i == 1 and not stp:  # 通過駅が一駅の場合に取得できないバグを修正
+            stp = route_soup.select(
+                "#route0"+str(j)+" > div > div.fareSection > div > div > ul > li.stop > ul > li > dl > dd")
+            tim = route_soup.select(
+                "#route0"+str(j)+" > div > div.fareSection > div > div > ul > li.stop > ul > li > dl > dt")
         if not stp:
+
             break
         rosen_times.append(
             re.sub("<[^<>]*>|[○\[\]]", "", str(tim)))  # タグを消去
