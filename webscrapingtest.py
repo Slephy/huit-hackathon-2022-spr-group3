@@ -6,8 +6,8 @@ import datetime
 import requests
 from bs4 import BeautifulSoup
 
-departure_station = "札幌"
-destination_station = "苗穂"
+departure_station = "近鉄名古屋"
+destination_station = "江戸橋"
 # 経路の取得先URL
 urla = 'https://transit.yahoo.co.jp/search/result?from='
 urlb = '&flatlon=&to='
@@ -51,6 +51,6 @@ for i in range(1, 4):
     li = li.replace("<span>", "")
     li = li.replace("</span>", "")
     prices.append(li)
-print("金額:\n", prices)
+print("乗車券金額:\n", prices)
 
 # //*[@id="route02"]/div/div[2]/div/ul/li[1]/div/text()
