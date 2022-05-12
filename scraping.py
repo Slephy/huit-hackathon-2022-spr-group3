@@ -1,3 +1,4 @@
+from pickle import FALSE, TRUE
 import requests
 import time
 import datetime
@@ -22,12 +23,12 @@ def get_traindata(departure_station, destination_station):
     info_rosens = []
     a = route_soup.find_all(class_="transport")
     if len(a) < 3:
-        return "NG", [], []
+        return -1, [], []
     for i in range(1, 4):
         txt = a[i].get_text()
         txt = txt.replace("[line][train]", "")
         info_rosens.append(txt)
-    print(info_rosens)
+
     # 3つの候補の出発時刻を取得
     info_deptime = []
     for i in range(1, 4):
@@ -36,7 +37,7 @@ def get_traindata(departure_station, destination_station):
         li = li.replace("<li>", "")
         li = li.replace("</li>", "")
         info_deptime.append(li)
-    print(info_deptime)
+
     # 3つの候補の到着時刻を取得
     info_arrtime = []
     for i in range(1, 4):
@@ -45,7 +46,6 @@ def get_traindata(departure_station, destination_station):
         li = li.replace("<li>", "")
         li = li.replace("</li>", "")
         info_arrtime.append(li)
-    print(info_arrtime)
 
     # 乗り換えがないか判定　&　地下鉄利用時に漢字表記の"札幌"によって直通できないと誤判断された場合の処理
     if "着" in info_arrtime[0]:
@@ -53,7 +53,7 @@ def get_traindata(departure_station, destination_station):
             return get_traindata(departure_station, "さっぽろ")
         if departure_station == "札幌":
             return get_traindata("さっぽろ", destination_station)
-        return "乗り換えのある経路案内はできません！ごめんなさい！", [], []
+        return -2, [], []
     # 3つの候補の金額を取得
     info_prices = []
     for i in range(1, 4):
@@ -62,9 +62,7 @@ def get_traindata(departure_station, destination_station):
         li = li.replace("<span>", "")
         li = li.replace("</span>", "")
         info_prices.append(li)
-    print(info_prices)
 
-    print("============================")
     # 途中駅を追加
     info_stops = []
     info_times = []
@@ -99,7 +97,7 @@ def get_traindata(departure_station, destination_station):
     dataArr1 = [info_deptime, info_deptime, info_rosens, info_prices]
     dataArr2 = info_stops+info_times
 
-    return "OK", dataArr1, dataArr2
+    return 0, dataArr1, dataArr2
 
 
-print(get_traindata("麻生", "札幌"))
+print(get_traindata("札幌", "麻生"))
