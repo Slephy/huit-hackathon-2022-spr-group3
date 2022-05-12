@@ -6,8 +6,8 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-departure_station = "札幌駅"
-destination_station = "南千歳駅"
+departure_station = "旭川駅"
+destination_station = "札幌駅"
 # 経路の取得先URL
 urla = 'https://transit.yahoo.co.jp/search/result?from='
 urlb = '&flatlon=&to='
