@@ -2,12 +2,12 @@ import requests
 import time
 import datetime
 import datetime
-
+import re
 import requests
 from bs4 import BeautifulSoup
 
-departure_station = "近鉄名古屋"
-destination_station = "江戸橋"
+departure_station = "新潟駅"
+destination_station = "寺尾駅"
 # 経路の取得先URL
 urla = 'https://transit.yahoo.co.jp/search/result?from='
 urlb = '&flatlon=&to='
@@ -18,39 +18,65 @@ print(route_url)
 route_response = requests.get(route_url)
 route_soup = BeautifulSoup(route_response.text, 'html.parser')
 # 3つの候補の路線名を取得
-rosens = []
+info_rosens = []
 a = route_soup.find_all(class_="transport")
 for i in range(1, 4):
     txt = a[i].get_text()
     txt = txt.replace("[line][train]", "")
-    rosens.append(txt)
-print("路線名:\n", rosens)
+    info_rosens.append(txt)
+print("路線名:\n", info_rosens)
 # 3つの候補の出発時刻を取得
-deptime = []
+info_deptime = []
 for i in range(1, 4):
     li = str(route_soup.select(
         "#route0"+str(i)+" > div > div:nth-child(1) > ul.time > li")[0])
     li = li.replace("<li>", "")
     li = li.replace("</li>", "")
-    deptime.append(li)
+    info_deptime.append(li)
+print("出発時刻:\n", info_deptime)
 # 3つの候補の到着時刻を取得
-print("出発時刻:\n", deptime)
-arrtime = []
+info_arrtime = []
 for i in range(1, 4):
     li = str(route_soup.select(
         "#route0"+str(i)+" > div > div:nth-child(3) > ul.time > li")[0])
     li = li.replace("<li>", "")
     li = li.replace("</li>", "")
-    arrtime.append(li)
-print("到着時刻:\n", arrtime)
+    info_arrtime.append(li)
+print("到着時刻:\n", info_arrtime)
 # 3つの候補の金額を取得
-prices = []
+info_prices = []
 for i in range(1, 4):
     li = str(route_soup.select(
         "#route0"+str(i)+" > div > div.fareSection > p > span")[0])
     li = li.replace("<span>", "")
     li = li.replace("</span>", "")
-    prices.append(li)
-print("乗車券金額:\n", prices)
+    info_prices.append(li)
+print("乗車券金額:\n", info_prices)
 
-# //*[@id="route02"]/div/div[2]/div/ul/li[1]/div/text()
+print("============================")
+# 途中駅を追加
+info_stops = []
+info_times = []
+for j in range(1, 4):
+    i = 0
+    rosen_stops = []
+    rosen_times = []
+    while 1:
+        i += 1
+        stp = route_soup.select(
+            "#route0"+str(j)+" > div > div.fareSection > div > ul > li.stop > ul > li:nth-child("+str(i)+") > dl > dd")
+        tim = route_soup.select(
+            "#route0"+str(j)+" > div > div.fareSection > div > ul > li.stop > ul > li:nth-child("+str(i)+") > dl > dt")
+        if not stp:
+            break
+        rosen_times.append(
+            re.sub("<[^<>]*>|[○\[\]]", "", str(tim)))  # タグを消去
+        rosen_stops.append(
+            re.sub("<[^<>]*>|[○\[\]]", "", str(stp)))  # タグを消去
+    rosen_stops.append(destination_station)  # 到着駅を追加
+    info_stops.append(rosen_stops)
+    rosen_times.append(info_arrtime[j-1])  # 到着駅の時刻を追加
+    info_times.append(rosen_times)
+
+    print("ルート"+str(j)+"の途中駅と時刻:\n", rosen_stops)
+    print(rosen_times)
