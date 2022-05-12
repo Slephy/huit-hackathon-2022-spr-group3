@@ -1,4 +1,3 @@
-from pickle import FALSE, TRUE
 import requests
 import time
 import datetime
