@@ -11,7 +11,7 @@ def get_traindata(departure_station, destination_station):
     # 経路の取得先URL
     urla = 'https://transit.yahoo.co.jp/search/result?from='
     urlb = '&flatlon=&to='
-    urlc = '&fromgid=&togid=&flatlon=&tlatlon=&via=&viacode=&y=2022&m=05&d=12&hh=10&m1=3&m2=8&type=1&ticket=ic&expkind=1&userpass=1&ws=3&s=0&al=0&shin=0&ex=1&hb=0&lb=0&sr=0'
+    urlc = '&fromgid=&togid=&flatlon=&tlatlon=&via=&viacode=&y=2022&m=05&d=12&hh=10&m1=3&m2=8&type=1&ticket=ic&expkind=1&userpass=1&ws=3&s=0&al=0&shin=0&ex=1&hb=0&lb=1&sr=0'
     route_url = urla + departure_station + urlb + destination_station + urlc
 
     print(route_url)
@@ -26,6 +26,7 @@ def get_traindata(departure_station, destination_station):
     for i in range(1, 4):
         txt = a[i].get_text()
         txt = txt.replace("[line][train]", "")
+        txt = txt.replace("[line][bus]", "")
         info_rosens.append(txt)
 
     # 3つの候補の出発時刻を取得
@@ -99,4 +100,4 @@ def get_traindata(departure_station, destination_station):
     return 0, dataArr1, dataArr2
 
 
-print(get_traindata("札幌", "麻生"))
+print(get_traindata("北１５条東１丁目", "北７条東１丁目"))
