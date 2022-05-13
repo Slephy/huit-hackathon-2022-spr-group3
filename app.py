@@ -50,22 +50,21 @@ def callback():
 def handle_message(event):
     txt = event.message.text
     txtArr = txt.split()
-    # try:
-    #     traindata = scraping.get_traindata(txtArr[0], txtArr[1])
-    #     replyText = ""
-    #     # msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
-    #     if traindata[0] == -1:
-    #         replyText = "正しく検索できませんでした"
-    #     elif traindata[1] == -2:
-    #         replyText = "乗り換えが発生していないか、確認してください"
-    #     else:
-    #         replyText = traindata
-    #     line_bot_api.reply_message(
-    #         event.reply_token, TextSendMessage(text=replyText))
-    # except Exception as e:
-    #     line_bot_api.reply_message(
-    #         event.reply_token, TextSendMessage(text="error:"+str(e)))
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=txt))
+    try:
+        traindata = scraping.get_traindata(txtArr[0], txtArr[1])
+        replyText = ""
+        # msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
+        if traindata[0] == -1:
+            replyText = "正しく検索できませんでした"
+        elif traindata[1] == -2:
+            replyText = "乗り換えが発生していないか、確認してください"
+        else:
+            replyText = traindata
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=replyText))
+    except Exception as e:
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text="error:"+str(e)))
 
 
 @handler.add(MessageEvent, message=LocationMessage)
