@@ -2,7 +2,7 @@ import os
 import random
 from flask import Flask, request, abort
 from geopy.distance import geodesic
-
+import scraping
 
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -48,8 +48,12 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+    txt = event.message.text
+    txtArr = txt.split()
+    traindata = scraping.get_traindata(txtArr[0], txtArr[1])
+    # msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
+    line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(text=str(traindata)))
 
 
 @handler.add(MessageEvent, message=LocationMessage)
