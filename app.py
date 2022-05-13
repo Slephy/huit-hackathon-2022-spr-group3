@@ -2,7 +2,7 @@ import os
 import random
 from flask import Flask, request, abort
 from geopy.distance import geodesic
-import tutorial.scraping as scraping
+import scraping
 
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
