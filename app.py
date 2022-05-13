@@ -2,7 +2,7 @@ import os
 import random
 from flask import Flask, request, abort
 from geopy.distance import geodesic
-import scraping
+import tutorial.scraping as scraping
 
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -54,12 +54,13 @@ def handle_message(event):
         traindata = scraping.get_traindata(txtArr[0], txtArr[1])
     except Exception as e:
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text="error:"+e))
+            event.reply_token, TextSendMessage(text="error:"+str(e)))
+
     replyText = ""
     # msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
-    if traindata[0] = -1:
+    if traindata[0] == -1:
         replyText = "正しく検索できませんでした"
-    elif traindata[1] = -2:
+    elif traindata[1] == -2:
         replyText = "乗り換えが発生していないか、確認してください"
     else:
         replyText = traindata
