@@ -50,10 +50,11 @@ def callback():
 
 def makeTrainResult(data, event):  # 取得したデータから何かしらをユーザに返す関数(テキスト?リッチメニュー?)
     try:
-        departureTimes = data[0]
-        arrivalTimes = data[1]
-        trainDescriptions = data[2]
-        prices = data[3]
+        departureTimes, arrivalTimes, trainDescriptions, prices = data
+        # departureTimes = data[0]
+        # arrivalTimes = data[1]
+        # trainDescriptions = data[2]
+        # prices = data[3]
         # departureTimes = [dt.strptime(i, '%H:%M')
         #                   for i in data[0]]  # 各列車の出発時刻の配列
         # arrivalTimes = [dt.strptime(i, '%H:%M')
@@ -101,7 +102,6 @@ def handle_message(event):
             replyTexts.append("乗り換えが発生していないか、確認してください")
         else:
             # line_bot_api.reply_message(event.reply_token, TextSendMessage(text="TEST: 検索は成功しました。"))
-            # replyTexts.append("TEST: 検索は成功しました。")
             replyTexts = makeTrainResult(trainData, event)
     except Exception as e:
         # 例外
@@ -110,9 +110,6 @@ def handle_message(event):
     # 成功
     replyTexts = [TextSendMessage(text=txt) for txt in replyTexts]
     line_bot_api.reply_message(event.reply_token, replyTexts)
-    # for txt in replyTexts:
-    #     line_bot_api.reply_message(
-    #         event.reply_token, TextSendMessage(text=txt))
 
 
 # 位置情報を受け取った時のイベント
