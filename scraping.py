@@ -98,6 +98,3 @@ def get_traindata(departure_station, destination_station):
     dataArr2 = info_stops+info_times
 
     return 0, dataArr1, dataArr2
-
-
-#print(get_traindata("北１５条東１丁目", "北７条東１丁目"))
