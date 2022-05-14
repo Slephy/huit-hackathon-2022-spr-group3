@@ -85,8 +85,8 @@ def handle_message(event):
     txt = event.message.text
     txtArr = txt.split()
     replyTexts = []
-    line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text="検索中です..."))
+    # line_bot_api.reply_message(
+    #     event.reply_token, TextSendMessage(text="検索中です..."))
     try:
         status, trainData, tsuukaData = scraping.get_traindata(
             txtArr[0], txtArr[1])
@@ -101,9 +101,11 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage("error:"+str(e)))
     # 成功
-    for txt in replyTexts:
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=txt))
+    replyTexts = [TextSendMessage(text=txt) for txt in replyTexts]
+    line_bot_api.reply_message(event.reply_token, replyTexts)
+    # for txt in replyTexts:
+    #     line_bot_api.reply_message(
+    #         event.reply_token, TextSendMessage(text=txt))
 
 
 # 位置情報を受け取った時のイベント
