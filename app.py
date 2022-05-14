@@ -51,7 +51,7 @@ def callback():
 def makeTrainResult(data, event):  # 取得したデータから何かしらをユーザに返す関数(テキスト?リッチメニュー?)
     # datetime debug
     line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(str(dt.datetime.now())))
+        event.reply_token, TextSendMessage(str(dt.datetime.now(dt.timezone(dt.timedelta(hours=+9), 'JST')))))
     try:
         departureTimes, arrivalTimes, trainDescriptions, prices = data
         # departureTimes = data[0]
