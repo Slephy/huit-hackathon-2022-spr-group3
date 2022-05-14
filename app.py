@@ -1,5 +1,7 @@
 import os
 import random
+import string
+import datetime as dt
 from flask import Flask, request, abort
 from geopy.distance import geodesic
 import scraping
@@ -45,6 +47,36 @@ def callback():
 
     return "OK"
 
+
+def makeTrainResult(data, event):  # 取得したデータから何かしらをユーザに返す関数(テキスト?リッチメニュー?)
+    try:
+        departureTimes = [dt.strptime(i, '%H:%M')
+                          for i in data[0]]  # 各列車の出発時刻の配列
+        arrivalTimes = [dt.strptime(i, '%H:%M')
+                        for i in data[1]]  # 各列車の到着時刻の配列
+        trainDescriptions = data[2]  # 各列車の列車種別と方面の配列
+        prices = data[2]
+    except Exception as e:
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+e))
+    txtArr = []
+    for i in [0, 1, 2]:
+        txt = ""
+        if i == 0:
+            txt += "[先発]\n"
+        if i == 1:
+            txt += "[次発]\n"
+        if i == 2:
+            txt += "[次々発]\n"
+        txt += trainDescriptions[i]+"\n"  # 列車種別と方面
+        txt += departureTimes[i].strftime('%H:%M') + \
+            "--->"+arrivalTimes[i].strftime('%H:%M')+"\n"  # 出発時刻と到着時刻
+        txt += (arrivalTimes[i]-departureTimes[i]).strftime('%M')+"分\n"
+        txt += prices[i]+"円"
+        txtArr.append(txt)
+    return txtArr
+
+
 # メッセージを受け取った時のイベント
 
 
@@ -52,22 +84,26 @@ def callback():
 def handle_message(event):
     txt = event.message.text
     txtArr = txt.split()
-    replyText = ""
+    replyTexts = []
+    line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(text="検索中です..."))
     try:
         status, trainData, tsuukaData = scraping.get_traindata(
             txtArr[0], txtArr[1])
-        # msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
         if status == -1:
-            replyText = "正しく検索できませんでした"
+            replyTexts.append("正しく検索できませんでした")
         elif status == -2:
-            replyText = "乗り換えが発生していないか、確認してください"
+            replyTexts.append("乗り換えが発生していないか、確認してください")
         else:
-            replyText = status
+            replyTexts = makeTrainResult(trainData, event)
     except Exception as e:
+        # 例外
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage("error:"+str(e)))
-    line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text=replyText))
+    # 成功
+    for txt in replyTexts:
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=txt))
 
 
 # 位置情報を受け取った時のイベント
