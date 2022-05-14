@@ -65,21 +65,31 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+ str(e)))
     txtArr = []
-    for i in [0, 1, 2]:
-        txt = ""
-        if i == 0:
-            txt += "[先発]\n"
-        if i == 1:
-            txt += "[次発]\n"
-        if i == 2:
-            txt += "[次々発]\n"
-        txt += trainDescriptions[i]+"\n"  # 列車種別と方面
-        txt += departureTimes[i] + "--->" + arrivalTimes[i] + "\n"
-        # txt += departureTimes[i].strftime('%H:%M') + \
-        #     "--->"+arrivalTimes[i].strftime('%H:%M')+"\n"  # 出発時刻と到着時刻
-        # txt += (arrivalTimes[i]-departureTimes[i]).strftime('%M')+"分\n"
-        txt += prices[i]
+    order = ["先発", "次発", "次次発"]
+    textTemplate = """{0}
+    {1}
+    {2} ---> {3}
+    {4}
+    """
+
+    for i in range(3):
+        txt = textTemplate.format(order[i], trainDescriptions[i], departureTimes[i], prices[i])
         txtArr.append(txt)
+    # for i in [0, 1, 2]:
+    #     txt = ""
+    #     if i == 0:
+    #         txt += "[先発]\n"
+    #     if i == 1:
+    #         txt += "[次発]\n"
+    #     if i == 2:
+    #         txt += "[次々発]\n"
+    #     txt += trainDescriptions[i]+"\n"  # 列車種別と方面
+    #     txt += departureTimes[i] + "--->" + arrivalTimes[i] + "\n"
+    #     # txt += departureTimes[i].strftime('%H:%M') + \
+    #     #     "--->"+arrivalTimes[i].strftime('%H:%M')+"\n"  # 出発時刻と到着時刻
+    #     # txt += (arrivalTimes[i]-departureTimes[i]).strftime('%M')+"分\n"
+    #     txt += prices[i]
+        # txtArr.append(txt)
     return txtArr
 
 
