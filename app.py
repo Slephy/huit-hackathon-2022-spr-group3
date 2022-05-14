@@ -58,7 +58,7 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         prices = data[2]
     except Exception as e:
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+e))
+            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+str(e)))
     txtArr = []
     for i in [0, 1, 2]:
         txt = ""
