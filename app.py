@@ -50,10 +50,10 @@ def callback():
 
 def makeTrainResult(data, event):  # 取得したデータから何かしらをユーザに返す関数(テキスト?リッチメニュー?)
     try:
-        departureTimes = data[1][0]
-        arrivalTimes = data[1][1]
-        trainDescriptions = data[1][2]
-        prices = data[1][3]
+        departureTimes = data[0]
+        arrivalTimes = data[1]
+        trainDescriptions = data[2]
+        prices = data[3]
         # departureTimes = [dt.strptime(i, '%H:%M')
         #                   for i in data[0]]  # 各列車の出発時刻の配列
         # arrivalTimes = [dt.strptime(i, '%H:%M')
