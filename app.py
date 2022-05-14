@@ -63,7 +63,7 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         # prices = data[2]
     except Exception as e:
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+ str(e)))
+            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+str(e)))
     txtArr = []
     order = ["先発", "次発", "次次発"]
     textTemplate = """{0}
@@ -96,7 +96,7 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
 # メッセージを受け取った時のイベント
 
 
-@handler.add(MessageEvent, message=TextMessage)
+@ handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     txt = event.message.text
     txtArr = txt.split()
@@ -123,7 +123,9 @@ def handle_message(event):
 
 
 # 位置情報を受け取った時のイベント
-@handler.add(MessageEvent, message=LocationMessage)
+
+
+@ handler.add(MessageEvent, message=LocationMessage)
 def handle_message(event):
     msgs = []
     msg_pos = (event.message.latitude, event.message.longitude)
@@ -144,13 +146,13 @@ def handle_message(event):
     line_bot_api.reply_message(event.reply_token, msgs)
 
 
-@handler.add(MessageEvent, message=StickerMessage)
+@ handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
     msg = "いいスタンプですね！"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 
-@handler.default()
+@ handler.default()
 def default(event):
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text="その形式の入力には対応していません"))
