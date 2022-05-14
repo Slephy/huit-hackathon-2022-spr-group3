@@ -45,6 +45,8 @@ def callback():
 
     return "OK"
 
+# メッセージを受け取った時のイベント
+
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -64,7 +66,9 @@ def handle_message(event):
             event.reply_token, TextSendMessage(text=replyText))
     except Exception as e:
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text="error:"+str(e)))
+            event.reply_token, TextSendMessage(text=str(traindata)))
+
+# 位置情報を受け取った時のイベント
 
 
 @handler.add(MessageEvent, message=LocationMessage)
