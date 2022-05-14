@@ -50,12 +50,16 @@ def callback():
 
 def makeTrainResult(data, event):  # 取得したデータから何かしらをユーザに返す関数(テキスト?リッチメニュー?)
     try:
-        departureTimes = [dt.strptime(i, '%H:%M')
-                          for i in data[0]]  # 各列車の出発時刻の配列
-        arrivalTimes = [dt.strptime(i, '%H:%M')
-                        for i in data[1]]  # 各列車の到着時刻の配列
-        trainDescriptions = data[2]  # 各列車の列車種別と方面の配列
-        prices = data[2]
+        departureTimes = data[0]
+        arrivalTimes = data[1]
+        trainDescriptions = data[2]
+        prices = data[3]
+        # departureTimes = [dt.strptime(i, '%H:%M')
+        #                   for i in data[0]]  # 各列車の出発時刻の配列
+        # arrivalTimes = [dt.strptime(i, '%H:%M')
+        #                 for i in data[1]]  # 各列車の到着時刻の配列
+        # trainDescriptions = data[2]  # 各列車の列車種別と方面の配列
+        # prices = data[2]
     except Exception as e:
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+str(e)))
@@ -69,10 +73,11 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         if i == 2:
             txt += "[次々発]\n"
         txt += trainDescriptions[i]+"\n"  # 列車種別と方面
-        txt += departureTimes[i].strftime('%H:%M') + \
-            "--->"+arrivalTimes[i].strftime('%H:%M')+"\n"  # 出発時刻と到着時刻
-        txt += (arrivalTimes[i]-departureTimes[i]).strftime('%M')+"分\n"
-        txt += prices[i]+"円"
+        txt += departureTimes[i] + "--->" + arrivalTimes[i] + "\n"
+        # txt += departureTimes[i].strftime('%H:%M') + \
+        #     "--->"+arrivalTimes[i].strftime('%H:%M')+"\n"  # 出発時刻と到着時刻
+        # txt += (arrivalTimes[i]-departureTimes[i]).strftime('%M')+"分\n"
+        txt += prices[i]
         txtArr.append(txt)
     return txtArr
 
@@ -80,13 +85,13 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
 # メッセージを受け取った時のイベント
 
 
-@handler.add(MessageEvent, message=TextMessage)
+@ handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     txt = event.message.text
     txtArr = txt.split()
     replyTexts = []
-    line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text="検索中です..."))
+    # line_bot_api.reply_message(
+    #     event.reply_token, TextSendMessage(text="検索中です..."))
     try:
         status, trainData, tsuukaData = scraping.get_traindata(
             txtArr[0], txtArr[1])
@@ -95,21 +100,25 @@ def handle_message(event):
         elif status == -2:
             replyTexts.append("乗り換えが発生していないか、確認してください")
         else:
+            # line_bot_api.reply_message(event.reply_token, TextSendMessage(text="TEST: 検索は成功しました。"))
+            # replyTexts.append("TEST: 検索は成功しました。")
             replyTexts = makeTrainResult(trainData, event)
     except Exception as e:
         # 例外
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage("error:"+str(e)))
+            event.reply_token, TextSendMessage("error:", str(e)))
     # 成功
-    for txt in replyTexts:
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=txt))
+    replyTexts = [TextSendMessage(text=txt) for txt in replyTexts]
+    line_bot_api.reply_message(event.reply_token, replyTexts)
+    # for txt in replyTexts:
+    #     line_bot_api.reply_message(
+    #         event.reply_token, TextSendMessage(text=txt))
 
 
 # 位置情報を受け取った時のイベント
 
 
-@handler.add(MessageEvent, message=LocationMessage)
+@ handler.add(MessageEvent, message=LocationMessage)
 def handle_message(event):
     msgs = []
     msg_pos = (event.message.latitude, event.message.longitude)
@@ -130,13 +139,13 @@ def handle_message(event):
     line_bot_api.reply_message(event.reply_token, msgs)
 
 
-@handler.add(MessageEvent, message=StickerMessage)
+@ handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
     msg = "いいスタンプですね！"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 
-@handler.default()
+@ handler.default()
 def default(event):
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text="その形式の入力には対応していません"))
