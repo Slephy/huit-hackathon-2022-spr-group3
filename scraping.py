@@ -51,7 +51,7 @@ def get_traindata(departure_station, destination_station):
         info_arrtime.append(li)
 
     # 乗り換えがないか判定　&　地下鉄利用時に漢字表記の"札幌"によって直通できないと誤判断された場合の処理
-    if "着" in info_arrtime[0]:
+    if "着" in info_arrtime[0] or "着" in info_arrtime[1] or "着" in info_arrtime[2]:
         if destination_station == "札幌":
             return get_traindata(departure_station, "さっぽろ")
         if departure_station == "札幌":
