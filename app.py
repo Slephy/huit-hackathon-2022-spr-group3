@@ -62,7 +62,7 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         # prices = data[2]
     except Exception as e:
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+e))
+            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+ str(e)))
     txtArr = []
     for i in [0, 1, 2]:
         txt = ""
@@ -100,7 +100,7 @@ def handle_message(event):
         elif status == -2:
             replyTexts.append("乗り換えが発生していないか、確認してください")
         else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="TEST: 検索は成功しました。"))
+            # line_bot_api.reply_message(event.reply_token, TextSendMessage(text="TEST: 検索は成功しました。"))
             # replyTexts.append("TEST: 検索は成功しました。")
             replyTexts = makeTrainResult(trainData, event)
     except Exception as e:
