@@ -100,12 +100,13 @@ def handle_message(event):
         elif status == -2:
             replyTexts.append("乗り換えが発生していないか、確認してください")
         else:
-            replyTexts.append("TEST: 検索は成功しました。")
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="TEST: 検索は成功しました。"))
+            # replyTexts.append("TEST: 検索は成功しました。")
             replyTexts = makeTrainResult(trainData, event)
     except Exception as e:
         # 例外
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage("error:"+str(e)))
+            event.reply_token, TextSendMessage("error:", str(e)))
     # 成功
     replyTexts = [TextSendMessage(text=txt) for txt in replyTexts]
     line_bot_api.reply_message(event.reply_token, replyTexts)
