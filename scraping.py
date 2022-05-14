@@ -9,7 +9,8 @@ from bs4 import BeautifulSoup
 
 def get_traindata(departure_station, destination_station):
     # 経路の取得先URL
-    n = datetime.datetime.now(dt.timezone(dt.timedelta(hours=+9), 'JST'))  # 今
+    n = datetime.datetime.now(datetime.timezone(
+        datetime.timedelta(hours=+9), 'JST'))  # 今
     urla = 'https://transit.yahoo.co.jp/search/result?from='
     urlb = '&flatlon=&to='
     urlc = '&fromgid=&togid=&flatlon=&tlatlon=&via=&viacode=&y='+str(n.year)+'&m='+str(n.month).zfill(2)+'&d='+str(n.day).zfill(2)+'&hh='+str(
