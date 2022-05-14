@@ -49,6 +49,9 @@ def callback():
 
 
 def makeTrainResult(data, event):  # 取得したデータから何かしらをユーザに返す関数(テキスト?リッチメニュー?)
+    # datetime debug
+    line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(str(dt.datetime.now())))
     try:
         departureTimes, arrivalTimes, trainDescriptions, prices = data
         # departureTimes = data[0]
@@ -68,12 +71,13 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
     txtArr = []
     order = ["先発", "次発", "次次発"]
     textTemplate = \
-"""[{0}]
+        """[{0}]
 {1}
 {2} ---> {3}
 {4}"""
     for i in range(3):
-        txt = textTemplate.format(order[i], trainDescriptions[i], departureTimes[i], arrivalTimes[i],prices[i])
+        txt = textTemplate.format(
+            order[i], trainDescriptions[i], departureTimes[i], arrivalTimes[i], prices[i])
         txtArr.append(txt)
     # for i in [0, 1, 2]:
     #     txt = ""
