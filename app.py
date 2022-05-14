@@ -52,21 +52,24 @@ def callback():
 def handle_message(event):
     txt = event.message.text
     txtArr = txt.split()
+    replyText = ""
     try:
-        traindata = scraping.get_traindata(txtArr[0], txtArr[1])
-        replyText = ""
+        status, trainData, tsuukaData = scraping.get_traindata(
+            txtArr[0], txtArr[1])
         # msg = f"「{event.message.text}」ですか？ ちょっとよくわかりませんね…"
-        if traindata[0] == -1:
+        if status == -1:
             replyText = "正しく検索できませんでした"
-        elif traindata[1] == -2:
+        elif status == -2:
             replyText = "乗り換えが発生していないか、確認してください"
         else:
-            replyText = traindata
+            replyText = status
     except Exception as e:
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage("error"+str(e)))
+            event.reply_token, TextSendMessage("error:"+str(e)))
     line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text=str(traindata)))
+        event.reply_token, TextSendMessage(text=replyText))
+
+
 # 位置情報を受け取った時のイベント
 
 
