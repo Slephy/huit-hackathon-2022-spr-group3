@@ -9,9 +9,11 @@ from bs4 import BeautifulSoup
 
 def get_traindata(departure_station, destination_station):
     # 経路の取得先URL
+    n = datetime.datetime.now()  # 今
     urla = 'https://transit.yahoo.co.jp/search/result?from='
     urlb = '&flatlon=&to='
-    urlc = '&fromgid=&togid=&flatlon=&tlatlon=&via=&viacode=&y=2022&m=05&d=12&hh=10&m1=3&m2=8&type=1&ticket=ic&expkind=1&userpass=1&ws=3&s=0&al=0&shin=0&ex=1&hb=0&lb=1&sr=0'
+    urlc = '&fromgid=&togid=&flatlon=&tlatlon=&via=&viacode=&y='+str(n.year)+'&m='+str(n.month).zfill(2)+'&d='+str(n.day).zfill(2)+'&hh='+str(
+        n.hour).zfill(2)+'&m1='+str(int(n.minute/10))+'&m2='+str(n.minute % 10)+'&type=1&ticket=ic&expkind=1&userpass=1&ws=3&s=0&al=0&shin=0&ex=1&hb=0&lb=1&sr=0'
     route_url = urla + departure_station + urlb + destination_station + urlc
 
     print(route_url)
@@ -98,3 +100,6 @@ def get_traindata(departure_station, destination_station):
     dataArr2 = info_stops+info_times
 
     return 0, dataArr1, dataArr2
+
+
+get_traindata("北12条", "札幌")
