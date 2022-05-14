@@ -64,14 +64,14 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
     except Exception as e:
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+str(e)))
-            
+
     txtArr = []
     order = ["先発", "次発", "次次発"]
-    textTemplate = """{0}
-    {1}
-    {2} ---> {3}
-    {4}
-    """
+    textTemplate = \
+"""[{0}]
+{1}
+{2} ---> {3}
+{4}"""
     for i in range(3):
         txt = textTemplate.format(order[i], trainDescriptions[i], departureTimes[i], arrivalTimes[i],prices[i])
         txtArr.append(txt)
