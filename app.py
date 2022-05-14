@@ -62,12 +62,11 @@ def handle_message(event):
             replyText = "乗り換えが発生していないか、確認してください"
         else:
             replyText = traindata
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=replyText))
     except Exception as e:
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=str(traindata)))
-
+            event.reply_token, TextSendMessage("error"+str(e)))
+    line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(text=str(traindata)))
 # 位置情報を受け取った時のイベント
 
 
