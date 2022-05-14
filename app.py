@@ -77,7 +77,7 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         # txt += departureTimes[i].strftime('%H:%M') + \
         #     "--->"+arrivalTimes[i].strftime('%H:%M')+"\n"  # 出発時刻と到着時刻
         # txt += (arrivalTimes[i]-departureTimes[i]).strftime('%M')+"分\n"
-        txt += prices[i]+"円"
+        txt += prices[i]
         txtArr.append(txt)
     return txtArr
 
@@ -100,6 +100,7 @@ def handle_message(event):
         elif status == -2:
             replyTexts.append("乗り換えが発生していないか、確認してください")
         else:
+            replyTexts.append("TEST: 検索は成功しました。")
             replyTexts = makeTrainResult(trainData, event)
     except Exception as e:
         # 例外
