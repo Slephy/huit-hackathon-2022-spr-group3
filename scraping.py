@@ -94,7 +94,7 @@ def get_traindata(departure_station, destination_station):
         rosen_times.append(info_arrtime[j-1])  # 到着駅の時刻を追加
         info_times.append(rosen_times)
 
-    dataArr1 = [info_deptime, info_deptime, info_rosens, info_prices]
+    dataArr1 = [info_deptime, info_arrtime, info_rosens, info_prices]
     dataArr2 = info_stops+info_times
 
     return 0, dataArr1, dataArr2
