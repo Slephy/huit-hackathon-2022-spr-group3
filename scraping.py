@@ -102,4 +102,4 @@ def get_traindata(departure_station, destination_station):
     return 0, dataArr1, dataArr2
 
 
-get_traindata("北12条", "札幌")
+#get_traindata("北12条", "札幌")
