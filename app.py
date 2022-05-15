@@ -20,6 +20,8 @@ from linebot.models import (
 TokyoStation = (35.681382, 139.76608399999998)
 NagoyaStation = (35.170915, 136.881537)
 
+global_test_num = 0
+
 app = Flask(__name__)
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
@@ -122,7 +124,9 @@ def handle_message(event):
 # スタンプを受け取った時のイベント
 @ handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
-    msg = "いいスタンプですね！"
+    global_test_num += 1
+    msg = str(global_test_num)
+    # msg = "いいスタンプですね！"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 
