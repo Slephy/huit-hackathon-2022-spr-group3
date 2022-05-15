@@ -124,6 +124,7 @@ def handle_message(event):
 # スタンプを受け取った時のイベント
 @ handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
+    global global_test_num
     global_test_num += 1
     msg = str(global_test_num)
     # msg = "いいスタンプですね！"
