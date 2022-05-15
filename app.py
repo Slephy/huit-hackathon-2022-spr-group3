@@ -52,16 +52,7 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
     # datetime debug
     try:
         departureTimes, arrivalTimes, trainDescriptions, prices = data
-        # departureTimes = data[0]
-        # arrivalTimes = data[1]
-        # trainDescriptions = data[2]
-        # prices = data[3]
-        # departureTimes = [dt.strptime(i, '%H:%M')
-        #                   for i in data[0]]  # 各列車の出発時刻の配列
-        # arrivalTimes = [dt.strptime(i, '%H:%M')
-        #                 for i in data[1]]  # 各列車の到着時刻の配列
-        # trainDescriptions = data[2]  # 各列車の列車種別と方面の配列
-        # prices = data[2]
+
     except Exception as e:
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+str(e)))
@@ -77,21 +68,6 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         txt = textTemplate.format(
             order[i], trainDescriptions[i], departureTimes[i], arrivalTimes[i], prices[i])
         txtArr.append(txt)
-    # for i in [0, 1, 2]:
-    #     txt = ""
-    #     if i == 0:
-    #         txt += "[先発]\n"
-    #     if i == 1:
-    #         txt += "[次発]\n"
-    #     if i == 2:
-    #         txt += "[次々発]\n"
-    #     txt += trainDescriptions[i]+"\n"  # 列車種別と方面
-    #     txt += departureTimes[i] + "--->" + arrivalTimes[i] + "\n"
-    #     # txt += departureTimes[i].strftime('%H:%M') + \
-    #     #     "--->"+arrivalTimes[i].strftime('%H:%M')+"\n"  # 出発時刻と到着時刻
-    #     # txt += (arrivalTimes[i]-departureTimes[i]).strftime('%M')+"分\n"
-    #     txt += prices[i]
-    #     txtArr.append(txt)
     return txtArr
 
 
@@ -113,7 +89,6 @@ def handle_message(event):
         elif status == -2:
             replyTexts.append("乗り換えが発生していないか、確認してください")
         else:
-            # line_bot_api.reply_message(event.reply_token, TextSendMessage(text="TEST: 検索は成功しました。"))
             replyTexts = makeTrainResult(trainData, event)
     except Exception as e:
         # 例外
@@ -125,8 +100,6 @@ def handle_message(event):
 
 
 # 位置情報を受け取った時のイベント
-
-
 @ handler.add(MessageEvent, message=LocationMessage)
 def handle_message(event):
     msgs = []
@@ -148,12 +121,14 @@ def handle_message(event):
     line_bot_api.reply_message(event.reply_token, msgs)
 
 
+# スタンプを受け取った時のイベント
 @ handler.add(MessageEvent, message=StickerMessage)
 def handle_message(event):
     msg = "いいスタンプですね！"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
 
+# 上記以外のものを受け取ったときのイベント（画像など）
 @ handler.default()
 def default(event):
     line_bot_api.reply_message(
