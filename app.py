@@ -72,15 +72,13 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
 
 
 # メッセージを受け取った時のイベント
-
-
 @ handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     txt = event.message.text
     txtArr = txt.split()
     replyTexts = []
-    # line_bot_api.reply_message(
-    #     event.reply_token, TextSendMessage(text="検索中です..."))
+    line_bot_api.push_message(
+        event.source.user_id, TextSendMessage(text="検索中です..."))
     try:
         status, trainData, tsuukaData = scraping.get_traindata(
             txtArr[0], txtArr[1])
