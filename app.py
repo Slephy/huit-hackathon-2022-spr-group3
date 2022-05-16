@@ -57,7 +57,7 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
 
     except Exception as e:
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。"+str(e)))
+            event.reply_token, TextSendMessage("error:データが正しく受け取られませんでした。" + str(e)))
 
     txtArr = []
     order = ["先発", "次発", "次次発"]
@@ -93,7 +93,7 @@ def handle_message(event):
     except Exception as e:
         # 例外
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage("error:", str(e)))
+            event.reply_token, TextSendMessage("error:"+ str(e)))
     # 成功
     replyTexts = [TextSendMessage(text=txt) for txt in replyTexts]
     line_bot_api.reply_message(event.reply_token, replyTexts)
