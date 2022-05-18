@@ -70,6 +70,7 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         txt = textTemplate.format(
             order[i], trainDescriptions[i], departureTimes[i], arrivalTimes[i], prices[i])
         txtArr.append(txt)
+    txtArr.append("出発駅と到着駅をスペース区切りで入力してください")
     return txtArr
 
 
