@@ -70,7 +70,6 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         txt = textTemplate.format(
             order[i], trainDescriptions[i], departureTimes[i], arrivalTimes[i], prices[i])
         txtArr.append(txt)
-    txtArr.append("出発駅と到着駅をスペース区切りで入力してください")
     return txtArr
 
 
@@ -87,10 +86,13 @@ def handle_message(event):
             txtArr[0], txtArr[1])
         if status == -1:
             replyTexts.append("正しく検索できませんでした")
+            replyTexts.append("[使い方] 出発駅と到着駅をスペース区切りで入力してください")
         elif status == -2:
             replyTexts.append("乗り換えが発生していないか、確認してください")
+            replyTexts.append("[使い方] 出発駅と到着駅をスペース区切りで入力してください")
         else:
             replyTexts = makeTrainResult(trainData, event)
+            replyTexts.append("[使い方] 出発駅と到着駅をスペース区切りで入力してください")
     except Exception as e:
         # 例外
         line_bot_api.reply_message(
