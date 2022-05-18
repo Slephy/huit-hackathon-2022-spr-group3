@@ -94,7 +94,6 @@ def handle_message(event):
             replyTexts = makeTrainResult(trainData, event)
     except Exception as e:
         # 例外
-        replyTexts.append("[使い方] 出発駅と到着駅をスペース区切りで入力してください")
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage("[使い方] 出発駅と到着駅をスペース区切りで入力してください"))
     # 成功
