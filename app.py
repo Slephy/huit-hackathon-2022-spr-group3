@@ -66,8 +66,8 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
 """[{0}]
 {1}
 {2} ---> {3}
-所要時間:{4}
-{5}"""
+所要時間：{4}
+金額：{5}"""
 
     for i in range(3):
         sub = data_minute(arrivalTimes[i]) - data_minute(departureTimes[i])
