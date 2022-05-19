@@ -73,8 +73,8 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
         sub = data_minute(arrivalTimes[i]) - data_minute(departureTimes[i])
         if sub<0:
             sub += 24*60
-            hour = sub//60
-            minute = sub%60
+        hour = sub//60
+        minute = sub%60
 
         onTrainTime = ""
         if hour!=0:
