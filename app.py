@@ -22,6 +22,13 @@ NagoyaStation = (35.170915, 136.881537)
 
 global_test_num = 0
 
+outputMessageTemplate = \
+"""[{0}]
+{1}
+{2} ---> {3}
+所要時間:{4}
+{5}"""
+
 app = Flask(__name__)
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
@@ -61,17 +68,27 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
 
     txtArr = []
     order = ["先発", "次発", "次次発"]
-    textTemplate = \
-        """[{0}]
-{1}
-{2} ---> {3}
-{4}"""
+
     for i in range(3):
-        txt = textTemplate.format(
-            order[i], trainDescriptions[i], departureTimes[i], arrivalTimes[i], prices[i])
+        sub = data_minute(arrivalTimes[i]) - data_minute(departureTimes[i])
+        if sub<0:
+            sub += 24*60
+            hour = sub//60
+            minute = sub%60
+
+        onTrainTime = ""
+        if hour!=0:
+            onTrainTime = '{}時間{}分'.format(hour,minute)
+        else:
+            onTrainTime = '{}分'.format(minute)
+        txt = outputMessageTemplate.format(
+            order[i], trainDescriptions[i], departureTimes[i], arrivalTimes[i], onTrainTime, prices[i])
         txtArr.append(txt)
     return txtArr
 
+def data_minute(data):
+    time = data.split(':')
+    return 60*int(time[0])+int(time[1])
 
 # メッセージを受け取った時のイベント
 @ handler.add(MessageEvent, message=TextMessage)
