@@ -22,12 +22,6 @@ NagoyaStation = (35.170915, 136.881537)
 
 global_test_num = 0
 
-outputMessageTemplate = \
-"""[{0}]
-{1}
-{2} ---> {3}
-所要時間:{4}
-{5}"""
 
 app = Flask(__name__)
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
@@ -68,6 +62,12 @@ def makeTrainResult(data, event):  # 取得したデータから何かしらを�
 
     txtArr = []
     order = ["先発", "次発", "次次発"]
+    outputMessageTemplate = \
+"""[{0}]
+{1}
+{2} ---> {3}
+所要時間:{4}
+{5}"""
 
     for i in range(3):
         sub = data_minute(arrivalTimes[i]) - data_minute(departureTimes[i])
